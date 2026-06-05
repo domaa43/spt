@@ -1213,28 +1213,34 @@ Pastikan sudah mengatur API Key AI (Groq / Gemini / Anthropic).</div>
 <div class="toast" id="toast"><span class="toast-icon" id="tIcon">✅</span><span id="tText"></span></div>
 
 <script>
-// ══════════════════════════════
-//  STATE
-// ══════════════════════════════
-let apiKey = localStorage.getItem('opsai_key')||'';
-let apiProvider = localStorage.getItem('opsai_provider')||'groq';
-let dataAnggaran = JSON.parse(localStorage.getItem('opsai_data')||'[]');
-let arsipDocs = JSON.parse(localStorage.getItem('opsai_arsip')||'[]');
-let chatHistory = [];
-let isBusy = false;
-let currentFileCtx = null;
-let currentFileText = '';
-let attachedDoc = null;
-let attachedDocData = null;  // base64 dataURL
-let attachedDocExt = '';
-let mainChart = null;
-let filterK = '', filterB = '', filterQ = '';
-let currentLaporan = '';
-// store attached doc data per record id (session only, not localStorage)
-let recordDocData = {};
+// Ganti dengan URL yang Anda salin pada Langkah 3
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzp_FXTbZdqOnVTJdsTaxfSN2fGp6E3iGg6QZDKcZxwQaDGvnPb7Ng3i-XTazkF_7GBpQ/exec";
 
-const PAGU_DEFAULT = {operasional:500000000,pad:2000000000,belanja:300000000,modal:1000000000,gaji:800000000,lainnya:100000000};
+function simpanKeCloud(namaInput, kontenInput) {
+    // Siapkan objek data yang strukturnya sesuai dengan JSON.parse di Apps Script
+    const dataKirim = {
+        nama: namaInput,
+        konten: kontenInput
+    };
 
+    // Mengirim data menggunakan metode POST
+    fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors", // Digunakan untuk menghindari masalah CORS pada hosting statis sederhana
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataKirim)
+    })
+    .then(() => {
+        alert("Data berhasil disimpan ke Cloud (Google Sheets)!");
+        // Di sini Anda bisa menambahkan fungsi untuk membersihkan form input Anda
+    })
+    .catch((error) => {
+        console.error("Terjadi kesalahan:", error);
+        alert("Gagal menyimpan data.");
+    });
+}
 // ══════════════════════════════
 //  INIT
 // ══════════════════════════════
